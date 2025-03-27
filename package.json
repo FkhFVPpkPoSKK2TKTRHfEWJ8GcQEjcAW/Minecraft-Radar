@@ -1,0 +1,29 @@
+	{
+  "name": "cctv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "deployDev": "cross-env NODE_ENV=development nodemon .",
+    "deployProd": "cross-env NODE_ENV=production node .",
+    "deployProdPm2": "pm2 start ecosystem.config.js --env production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "cross-env": "^7.0.3",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "mineflayer": "^4.27.0",
+    "os-utils": "^0.0.14",
+    "pagination.djs": "^4.0.18",
+    "quick.db": "^9.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^9.23.0",
+    "nodemon": "^3.1.9",
+    "pm2": "^6.0.5"
+  }
+}
