@@ -47,9 +47,9 @@ A Discord and Mineflayer bot that monitors nearby users to an area to ensure sec
 
    1. Copy the example environment file:
       ```bash
-      cp example.env .env
+      cp example.env .env.production
       ```
-   2. Edit the `.env` file with your configuration:
+   2. Edit the `.env.production` file with your configuration:
 
       ```
       # Minecraft Configurations
@@ -72,7 +72,7 @@ A Discord and Mineflayer bot that monitors nearby users to an area to ensure sec
 5. **Deployment**
    1. Start the bot in development mode:
       ```bash
-      npm run dev
+      npm run deployProd
       ```
    2. For production deployment:
       ```bash
