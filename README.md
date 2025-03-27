@@ -1,6 +1,6 @@
-# Minewind CCTV Bot
+# Minecraft CCTV Bot
 
-A Discord bot that monitors nearby users to an area to ensure security of bases and facilities.
+A Discord and Mineflayer bot that monitors nearby users to an area to ensure security of bases and facilities.
 
 ## Prerequisites
 
