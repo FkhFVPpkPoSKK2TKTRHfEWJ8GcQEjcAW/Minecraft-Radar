@@ -53,7 +53,11 @@ const playerLocationTracker = {
 			embed
 				.setTitle("Player Detected In Render Distance")
 				.setColor("Red")
-				.setDescription(`Player Username: ${player.username}\nPlayer UUID: ${playerUuid}`)
+				.setDescription(
+					`Player Username: ${player.username}\n` +
+					`Player UUID: ${playerUuid}\n` +
+					`Location: X: ${Math.round(location.x)}, Y: ${Math.round(location.y)}, Z: ${Math.round(location.z)}`
+				)
 				.setTimestamp();
 
 			await sendBotChannel({ embeds: [embed] })
