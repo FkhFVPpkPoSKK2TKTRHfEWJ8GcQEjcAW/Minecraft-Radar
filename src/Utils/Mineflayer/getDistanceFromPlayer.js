@@ -18,8 +18,9 @@ const playerLocationTracker = {
 		this.intervalId = setInterval(async () => {
 			try {
 				const allPlayersLocation = await this.getAllPlayersLocations(bot);
-				if(allPlayersLocation.length > 0) return;
-				// console.log(allPlayersLocation);
+				if(allPlayersLocation.length > 0) {
+					console.log(allPlayersLocation);
+				}
 			} catch (error) {
 				console.error("Error logging player locations:", error);
 			}
@@ -44,7 +45,7 @@ const playerLocationTracker = {
 		// If player not found or entity not in render distance
 		if (!player || !player.entity) {
 			const playerUuid = player?.uuid;
-			if (playerUuid && this.playersInRadiusDiscordAlert.has(playerUuid)) {
+			if (playerUuid && this.playersInRadiusDiscordAlert.has(playerUuid) && !await allowListModel.includeCheck(playerUuid)) {
 				this.playersInRadiusDiscordAlert.delete(playerUuid);
 				const lastLocation = this.playerLastLocations.get(playerUuid);
 				
@@ -81,7 +82,7 @@ const playerLocationTracker = {
 			z: location.z,
 		});
 
-		if(!allowListModel.includeCheck(playerUuid) && !this.playersInRadiusDiscordAlert.has(playerUuid)) {
+		if(!await allowListModel.includeCheck(playerUuid) && !this.playersInRadiusDiscordAlert.has(playerUuid)) {
 			await this.playersInRadiusDiscordAlert.add(playerUuid);
 
 			const embed = new EmbedBuilder()
