@@ -81,7 +81,7 @@ const playerLocationTracker = {
 			z: location.z,
 		});
 
-		if(allowListModel.includeCheck(playerUuid) && !this.playersInRadiusDiscordAlert.has(playerUuid)) {
+		if(!allowListModel.includeCheck(playerUuid) && !this.playersInRadiusDiscordAlert.has(playerUuid)) {
 			await this.playersInRadiusDiscordAlert.add(playerUuid);
 
 			const embed = new EmbedBuilder()
