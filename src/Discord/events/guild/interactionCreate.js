@@ -3,7 +3,9 @@ const { buttonInteractionExpiry } = require("../../../../configurations/discordC
 const paginationNamesCustomButtonIds = new Set(["paginate-first", "paginate-last", "paginate-next", "paginate-prev"]);
 
 module.exports = async (bot, interactionCreate) => {
-	if (interactionCreate.isChatInputCommand()) {
+	if(!interactionCreate.member.roles.cache.has(process.env.DISCORD_BOT_CONTROL_ROLE)) {
+		return interactionCreate.reply("...");
+	} else if (interactionCreate.isChatInputCommand()) {
 		try {
 			let interactionAuthorID = interactionCreate.user.id;
 			let interactionGuildID = interactionCreate.guild.id;

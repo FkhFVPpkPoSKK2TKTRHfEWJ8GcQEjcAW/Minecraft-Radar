@@ -52,24 +52,47 @@ A Discord and Mineflayer bot that monitors nearby users to an area to ensure sec
    2. Edit the `.env.production` file with your configuration:
 
       ```
-      # Minecraft Configurations
-      MINECRAFT_SERVER_IP_ADDRESS=your_server_ip
-      MINECRAFT_BOT_USERNAME=your_bot_username
-      MINECRAFT_AUTH_METHOD=microsoft
-      MINECRAFT_SERVER_VERSION=false
-      MINECRAFT_MESSAGE_UPON_SPAWN=hello
-
-      # Bot Update Frequency (in milliseconds)
-      MINECRAFT_BOT_COORDINATE_FREQUENCY_MS=1000
-
-      # Discord Bot Configurations
-      DISCORD_BOT_OWNER_ID=your_discord_user_id
-      DISCORD_BOT_FLAGGED_CHANNEL=your_channel_id
-      DISCORD_BOT_CONTROL_ROLE=your_role_id
-      DISCORD_TOKEN=your_bot_token
+		# Minecraft Configurations
+		MINECRAFT_SERVER_IP_ADDRESS =
+		MINECRAFT_BOT_USERNAME =
+		MINECRAFT_AUTH_METHOD =
+		MINECRAFT_SERVER_VERSION =
+		MINECRAFT_MESSAGE_UPON_SPAWN =
+		
+		# 1000ms is about 20 minecraft ticks
+		MINECRAFT_BOT_COORDINATE_FREQUENCY_MS =
+		
+		# Discord Bot Configurations
+		DISCORD_BOT_OWNER_ID =
+		DISCORD_BOT_FLAGGED_CHANNEL =
+		DISCORD_BOT_CONTROL_ROLE =
+		DISCORD_TOKEN =
+		
+		# Death Event
+		DISCORD_MINEFLAYER_BOT_DEATH_MESSAGE =
+		MINECRAFT_CHAT_UPON_DEATH =
+		
+		
+		SERVER_CHUNK_RADIUS = 12 # I have no way of actually getting this information
       ```
 
-5. **Deployment**
+5. **Configure Allowed Users**
+   1. Navigate to `configurations/allowList.json`
+   2. Edit the file to include operator usernames:
+      ```json
+      {
+        "opUsers": [
+          "username1",
+          "username2"
+        ]
+      }
+      ```
+   3. These users will have special privileges with the bot, such as:
+      - Bot will track and follow these users
+	  - If you are on this list, hit the bot to make it follow you and hit it again to make it stop following you.
+      - Enhanced monitoring capabilities
+
+6. **Deployment**
    1. Start the bot in development mode:
       ```bash
       npm run deployProd
