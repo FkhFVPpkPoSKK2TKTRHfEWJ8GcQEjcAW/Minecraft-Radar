@@ -2,12 +2,13 @@ const { playerLocationTracker } = require("../../../Utils/Mineflayer/getDistance
 const { botWalkingState } = require("../../../Utils/Mineflayer/additionalStates.js");
 require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 
-module.exports = async (MineflayerBot) => {
-	console.log(`Bot has been spawned/logged in: ${new Date().toString()}\n`);
+module.exports = async () => {
+	console.log(`Bot has been spawned: ${new Date().toString()}\n`);
 
 	// default behaviour on spawn
 	botWalkingState.setFalse();
-	MineflayerBot.chat(process.env.MINECRAFT_MESSAGE_UPON_SPAWN) // remove this line - this was added for a project on a server i play on
+	MineflayerBot.chat(process.env.MINECRAFT_MESSAGE_UPON_SPAWN); // remove this line - this was added for a project on a server i play on
+	console.log(process.env.MINECRAFT_MESSAGE_UPON_SPAWN);
 	MineflayerBot.setControlState("sneak", true);
 	MineflayerBot.setControlState("forward", false);
 

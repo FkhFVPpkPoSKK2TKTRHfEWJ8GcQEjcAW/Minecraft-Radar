@@ -6,6 +6,8 @@ require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
 const playerLocationTracker = {
 	intervalId: null,
 	playersInRadiusDiscordAlert: new Set(),
+	latestBotLocation: null,
+	playerLastLocations: new Map(),
 
 	async startLogging(bot, interval = 10000) {
 		if (this.intervalId !== null) {
@@ -17,7 +19,7 @@ const playerLocationTracker = {
 			try {
 				const allPlayersLocation = await this.getAllPlayersLocations(bot);
 				if(allPlayersLocation.length > 0) return;
-				console.log(allPlayersLocation);
+				// console.log(allPlayersLocation);
 			} catch (error) {
 				console.error("Error logging player locations:", error);
 			}
@@ -39,18 +41,50 @@ const playerLocationTracker = {
 	async getPlayerLocation(bot, playerName) {
 		const player = bot.players[playerName];
 
-		if (!player || !player.entity || player.username === process.env.MINECRAFT_BOT_USERNAME) {
+		// If player not found or entity not in render distance
+		if (!player || !player.entity) {
+			const playerUuid = player?.uuid;
+			if (playerUuid && this.playersInRadiusDiscordAlert.has(playerUuid)) {
+				this.playersInRadiusDiscordAlert.delete(playerUuid);
+				const lastLocation = this.playerLastLocations.get(playerUuid);
+				
+				const embed = new EmbedBuilder()
+					.setTitle("Player Left Render Distance")
+					.setColor("Yellow")
+					.setDescription(
+						`Player Username: ${playerName}\n` +
+						`Player UUID: ${playerUuid}\n` +
+						(lastLocation ? `Last Known Location: X: ${Math.round(lastLocation.x)}, Y: ${Math.round(lastLocation.y)}, Z: ${Math.round(lastLocation.z)}` : "No last known location")
+					)
+					.setTimestamp();
+
+				await sendBotChannel({ embeds: [embed] });
+				this.playerLastLocations.delete(playerUuid);
+			}
 			return;
-			// return { error: 'Player not found' };
 		}
 
 		const location = player.entity.position;
+		if(player.username === process.env.MINECRAFT_BOT_USERNAME) {
+			this.latestBotLocation = {
+				x: location.x,
+				y: location.y,
+				z: location.z,
+			};
+			return;
+		}
+
 		const playerUuid = player.uuid;
+		this.playerLastLocations.set(playerUuid, {
+			x: location.x,
+			y: location.y,
+			z: location.z,
+		});
+
 		if(allowListModel.includeCheck(playerUuid) && !this.playersInRadiusDiscordAlert.has(playerUuid)) {
 			await this.playersInRadiusDiscordAlert.add(playerUuid);
 
-			const embed = new EmbedBuilder();
-			embed
+			const embed = new EmbedBuilder()
 				.setTitle("Player Detected In Render Distance")
 				.setColor("Red")
 				.setDescription(
@@ -60,10 +94,9 @@ const playerLocationTracker = {
 				)
 				.setTimestamp();
 
-			await sendBotChannel({ embeds: [embed] })
+			await sendBotChannel({ embeds: [embed] });
 		}
 
-		// Return the player and their location in JSON format
 		return {
 			player: playerName,
 			location: {
